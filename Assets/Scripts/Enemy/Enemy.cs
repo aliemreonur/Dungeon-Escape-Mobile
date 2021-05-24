@@ -14,11 +14,16 @@ public abstract class Enemy : MonoBehaviour
     protected Vector3 currentTarget;
     protected Animator anim;
     protected SpriteRenderer spriteRenderer;
+
+    protected bool isHit;
+    protected Player player;
     
     public virtual void Init()
     {
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+          
     }
 
     private void Start()
@@ -28,11 +33,13 @@ public abstract class Enemy : MonoBehaviour
 
     public virtual void Update()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle") && anim.GetBool("InCombat") == false)
         {
             return;
         }
         Move();
+        //Death();
+
     }
     public virtual void Move()
     {
@@ -56,7 +63,38 @@ public abstract class Enemy : MonoBehaviour
             currentTarget = pointA.position;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        if(!isHit)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        }
+
+        //float distance = Vector3.Distance(transform.position, player.transform.position);
+
+        Vector3 distance = player.transform.position - transform.position;
+        if (distance.x > 2.0f)
+        {
+            isHit = false;
+            anim.SetBool("InCombat", false);
+        }
+        else if (distance.x <= 2.0f && anim.GetBool("InCombat"))
+        {
+            if (distance.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+            else if (distance.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
+        }
+        
     }
 
+    public virtual void Death()
+    {
+        if(health < 1)
+        {
+            anim.SetBool("Death", true);
+        }
+    }
 }

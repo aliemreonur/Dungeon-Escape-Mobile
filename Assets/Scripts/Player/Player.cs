@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     Rigidbody2D _rb2D;
     SpriteRenderer _spriteRenderer;
+
+    private bool _isAlive;
+    public bool isAlive
+    {
+        get { return _isAlive; }
+        private set { _isAlive = value; }
+    }
 
     private SpriteRenderer _swordArcSprite;
 
@@ -14,7 +21,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _jump = 5f;
     [SerializeField] private bool _isGrounded, _facingLeft;
+    [SerializeField] private int health;
     private bool _resetJumpNeed = false;
+
+    public int Health { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +41,7 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Sprite renderer of player is null");
         }
+        Health = health;
 
         _swordArcSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
     }
@@ -122,6 +133,17 @@ public class Player : MonoBehaviour
             newPos.x = 1.01f;
             _swordArcSprite.transform.localPosition = newPos;
         }
+    }
+
+    public void Damage()
+    {
+        _anim.Damage(health);
+        health--;
+        if(health <1)
+        {
+            _isAlive = false;
+            StartCoroutine(DeathRoutine());
+        }
 
     }
 
@@ -129,5 +151,11 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         _resetJumpNeed = false;
+    }
+
+    IEnumerator DeathRoutine()
+    {
+        yield return new WaitForSeconds(2.0f);
+        Destroy(this.gameObject);
     }
 }

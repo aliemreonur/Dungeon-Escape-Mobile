@@ -2,11 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spider : Enemy
+public class Spider : Enemy, IDamageable
 {
+    [SerializeField] private GameObject _acidPrefab;
+    public int Health { get; set; }
+
     public override void Init()
     {
         base.Init();
+        Health = health;
+    }
+
+    public override void Move()
+    {
+        
+    }
+
+    public void Damage()
+    {
+        //Debug.Log("Damage");
+        anim.SetBool("InCombat", true);
+        Health--;
+        isHit = true;
+        if (Health < 1)
+        {
+            anim.SetBool("InCombat", false);
+            anim.SetTrigger("Death");
+            Destroy(this.gameObject, 1.5f);
+        }
+    }
+
+    public void Attack()
+    {
+        Instantiate(_acidPrefab, transform.position, Quaternion.identity);
     }
 }
 
