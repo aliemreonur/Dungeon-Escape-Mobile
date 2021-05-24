@@ -17,6 +17,7 @@ public abstract class Enemy : MonoBehaviour
 
     protected bool isHit;
     protected Player player;
+    protected bool isDead;
     
     public virtual void Init()
     {
@@ -37,8 +38,10 @@ public abstract class Enemy : MonoBehaviour
         {
             return;
         }
-        Move();
-        //Death();
+        if(!isDead)
+        {
+            Move();
+        }
 
     }
     public virtual void Move()
@@ -70,7 +73,7 @@ public abstract class Enemy : MonoBehaviour
 
         //float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        Vector3 distance = player.transform.position - transform.position;
+        Vector3 distance = player.transform.localPosition - transform.localPosition;
         if (distance.x > 2.0f)
         {
             isHit = false;
@@ -88,13 +91,5 @@ public abstract class Enemy : MonoBehaviour
             }
         }
         
-    }
-
-    public virtual void Death()
-    {
-        if(health < 1)
-        {
-            anim.SetBool("Death", true);
-        }
     }
 }

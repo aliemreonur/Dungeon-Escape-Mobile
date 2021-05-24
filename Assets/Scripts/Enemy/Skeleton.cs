@@ -30,6 +30,7 @@ public class Skeleton : Enemy, IDamageable
         {
             anim.SetBool("InCombat", false);
             anim.SetTrigger("Death");
+            isDead = true;
             Destroy(this.gameObject, 2.0f);
         }
     }

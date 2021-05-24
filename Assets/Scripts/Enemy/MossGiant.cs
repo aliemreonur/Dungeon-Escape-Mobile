@@ -28,15 +28,9 @@ public class MossGiant : Enemy, IDamageable
         {
             anim.SetBool("InCombat", false);
             anim.SetTrigger("Death");
-            StartCoroutine(DeathRoutine());
+            isDead = true;
+            Destroy(this.gameObject, 1.5f);
         }
     }
-
-    IEnumerator DeathRoutine()
-    {
-        yield return new WaitForSeconds(2.0f);
-        Destroy(this.gameObject);
-    }
-
 
 }

@@ -28,6 +28,7 @@ public class Spider : Enemy, IDamageable
         {
             anim.SetBool("InCombat", false);
             anim.SetTrigger("Death");
+            isDead = true;
             Destroy(this.gameObject, 1.5f);
         }
     }
