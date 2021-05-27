@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour, IDamageable
 {
@@ -58,15 +59,14 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Move()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float horizontalInput = CrossPlatformInputManager.GetAxisRaw("Horizontal");
         Flip(horizontalInput);
 
         _rb2D.velocity = new Vector2(horizontalInput * _speed, _rb2D.velocity.y);
         _anim.Move(horizontalInput);
 
-        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+        if ((CrossPlatformInputManager.GetButtonDown("B_Button")) && _isGrounded)
         {
-
             _rb2D.velocity = new Vector2(_rb2D.velocity.x, _jump);
             _anim.Jump(true);
             _isGrounded = false;
@@ -74,6 +74,10 @@ public class Player : MonoBehaviour, IDamageable
             StartCoroutine(ResetJumpRoutine());
         }
     }
+
+    //float horizontalInput = Input.GetAxisRaw("Horizontal");
+    //Input.GetKeyDown(KeyCode.Space) ||
+
 
     private void GroundCheck()
     {
@@ -108,11 +112,12 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Attack()
     {
-        if(Input.GetMouseButtonDown(0) && _isGrounded)
+        if( CrossPlatformInputManager.GetButtonDown("A_Button") && _isGrounded)
         {
             _anim.Attack();
         }
     }
+    //Input.GetMouseButtonDown(0) ||
 
     private void FlipSword()
     {
