@@ -6,6 +6,8 @@ public class Player : MonoBehaviour, IDamageable
 {
     Rigidbody2D _rb2D;
     SpriteRenderer _spriteRenderer;
+    //[SerializeField] private int _diamonds;
+    public int diamonds;
 
     private bool _isAlive;
     public bool isAlive
@@ -41,7 +43,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             Debug.LogError("Sprite renderer of player is null");
         }
-        Health = health;
+        Health = 4;
 
         _swordArcSprite = transform.GetChild(1).GetComponent<SpriteRenderer>();
     }
@@ -137,14 +139,26 @@ public class Player : MonoBehaviour, IDamageable
 
     public void Damage()
     {
-        _anim.Damage(health);
-        health--;
-        if(health <1)
+        if(Health <1)
         {
+            return; //return if already dead
+        }
+        _anim.Damage(Health);
+        Health--;
+        UIManager.Instance.UpdateLives(Health);
+        if(Health <1)
+        {
+            _anim.Death();
             _isAlive = false;
-            StartCoroutine(DeathRoutine());
+            
         }
 
+    }
+
+    public void AddDiamond(int amount)
+    {
+        diamonds += amount;
+        UIManager.Instance.UpdateGemCount(diamonds);
     }
 
     IEnumerator ResetJumpRoutine()
@@ -153,9 +167,4 @@ public class Player : MonoBehaviour, IDamageable
         _resetJumpNeed = false;
     }
 
-    IEnumerator DeathRoutine()
-    {
-        yield return new WaitForSeconds(2.0f);
-        Destroy(this.gameObject);
-    }
 }

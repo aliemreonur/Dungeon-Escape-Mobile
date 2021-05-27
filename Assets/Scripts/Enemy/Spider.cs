@@ -29,6 +29,11 @@ public class Spider : Enemy, IDamageable
             anim.SetBool("InCombat", false);
             anim.SetTrigger("Death");
             isDead = true;
+            Diamond diamondToSpawn = Instantiate(diamond, transform.position, Quaternion.identity);
+            if (diamondToSpawn != null)
+            {
+                diamondToSpawn.gemAmount = gems;
+            }
             Destroy(this.gameObject, 1.5f);
         }
     }

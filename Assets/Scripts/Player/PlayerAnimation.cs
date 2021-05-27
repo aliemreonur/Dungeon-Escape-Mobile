@@ -36,10 +36,11 @@ public class PlayerAnimation : MonoBehaviour
     public void Damage(int health)
     {
         _anim.SetTrigger("Hit");
-        if(health < 1)
-        {
-            _anim.SetTrigger("Death");
-        }
 
+    }
+
+    public void Death()
+    {
+        _anim.SetTrigger("Death");
     }
 }

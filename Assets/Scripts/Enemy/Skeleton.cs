@@ -28,10 +28,18 @@ public class Skeleton : Enemy, IDamageable
         isHit = true;
         if(Health < 1)
         {
-            anim.SetBool("InCombat", false);
-            anim.SetTrigger("Death");
-            isDead = true;
-            Destroy(this.gameObject, 2.0f);
+            if(!isDead)
+            {
+                anim.SetBool("InCombat", false);
+                anim.SetTrigger("Death");
+                isDead = true;
+                Diamond diamondToSpawn = Instantiate(diamond, transform.position, Quaternion.identity);
+                if (diamondToSpawn != null)
+                {
+                    diamondToSpawn.gemAmount = gems;
+                }
+                Destroy(this.gameObject, 2.0f);
+            }
         }
     }
 
