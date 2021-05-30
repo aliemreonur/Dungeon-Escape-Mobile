@@ -18,22 +18,13 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] public bool HasKeyToCastle { get; set; }
 
+    public Player Player { get; private set; }
+
     private void Awake()
     {
         _instance = this;
+        Player = FindObjectOfType<Player>().GetComponent<Player>();
+       
     }
   
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

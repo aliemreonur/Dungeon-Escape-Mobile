@@ -65,7 +65,7 @@ public class Player : MonoBehaviour, IDamageable
         _rb2D.velocity = new Vector2(horizontalInput * _speed, _rb2D.velocity.y);
         _anim.Move(horizontalInput);
 
-        if ((CrossPlatformInputManager.GetButtonDown("B_Button")) && _isGrounded)
+        if ((CrossPlatformInputManager.GetButtonDown("B_Button") || Input.GetKeyDown(KeyCode.Space)) && _isGrounded)
         {
             _rb2D.velocity = new Vector2(_rb2D.velocity.x, _jump);
             _anim.Jump(true);
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     //float horizontalInput = Input.GetAxisRaw("Horizontal");
-    //Input.GetKeyDown(KeyCode.Space) ||
+    //
 
 
     private void GroundCheck()
